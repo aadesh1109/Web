@@ -1,0 +1,176 @@
+* {
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+  text-align: center;
+  outline: 0;
+}
+
+#result,
+#resultString,
+#maintenanceCalorie,
+#goal,
+#bmrSt {
+  background-color: black;
+  width: fit-content;
+  margin: auto;
+  color: whitesmoke;
+  border-radius: 25px;
+  margin-top: 20px;
+  margin-bottom: 6px;
+  text-align: center;
+  padding: 5px;
+}
+
+body::before {
+  content: "";
+  left: 0px;
+  top: 0px;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  background: url(back3.jpg) no-repeat center center/cover;
+  z-index: -2;
+}
+
+body::after {
+  content: "";
+  left: 0px;
+  top: 0px;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  background: black;
+  z-index: -1;
+  opacity: 0.5;
+}
+
+#diet {
+  /* border: 2px solid black; */
+  margin: 10px 4px;
+}
+
+#feedback {
+  min-width: 200px;
+  min-height: 200px;
+  border: 2px solid black;
+}
+
+#feedback::before {
+  content: "";
+  left: 0px;
+  position: absolute;
+  height: 96.7%;
+  width: 100%;
+  background: black;
+  z-index: -1;
+  opacity: 0.5;
+}
+
+#feedback textarea {
+  border-radius: 15px;
+  text-align: left;
+  border: 3px solid black;
+  padding: 20px 10px;
+  margin: 65px 5px;
+  margin-bottom: 200px;
+  background-color: #d2d2d2;
+}
+
+h2 {
+  color: whitesmoke;
+  margin: 30px 370px;
+  font-size: 35px;
+  text-decoration-line: overline;
+  background-color: black;
+  padding: 6px 0px;
+  border-radius: 15px;
+}
+
+#btn {
+  display: block;
+  margin: 25px auto;
+  padding: 0px 0px;
+  height: 66px;
+  width: 66px;
+  border-radius: 50px;
+  font-size: 22px;
+  border: 2px solid whitesmoke;
+  background-color: #005cb9;
+  color: whitesmoke;
+  position: absolute;
+  top: 1640px;
+  left: 740px;
+  cursor: pointer;
+  font-size: 22px;
+  font-family: "Lucida Console", Monaco, monospace;
+  letter-spacing: 1px;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 0 #005cb9;
+  -webkit-transition: ease-out 0.4s;
+  -moz-transition: ease-out 0.4s;
+  transition: ease-out 0.4s;
+  background-color: #d4d4d4;
+  color: black;
+  border: 3px solid #005cb9;
+}
+
+#btn:hover{
+  box-shadow: inset 0 0 0 50px #005cb9;
+  color: whitesmoke;
+  border-color: whitesmoke;
+}
+
+h1 {
+  margin: 20px 0px;
+  padding: 8px 0px;
+  font-size: 34px;
+  text-decoration-line: overline;
+  background-color: black;
+  color: whitesmoke;
+}
+
+tr,
+th,
+td,
+table {
+  border: 3px solid black;
+  background: #b7b7b7;
+  color: black;
+  font-family: "Dancing Script", cursive;
+}
+
+tr,
+th,
+td {
+  padding: 12px 10px;
+}
+
+th,.sub-name{
+  background-color: whitesmoke;
+}
+
+table{
+  margin-bottom: -10px;
+}
+
+.Day{
+  font-size: 50px;
+}
+
+#h1summary{
+  margin-left: 470px;
+  margin-right:470px;
+  border-radius: 15px;
+  display: none;
+}
+
+#h1diet{
+  margin-left: 520px;
+  margin-right:520px;
+  border-radius: 15px;
+}
+
+#goal{
+  margin-bottom: -45px;
+}

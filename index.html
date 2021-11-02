@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EatSmart</title>
+    <link rel="stylesheet" href="home_page.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+  </head>
+  <body>
+    <div id="logout">
+      <button id="lobtn" onclick="logout()">Log Out</button>
+    </div>
+
+    <nav id="navbar">
+      <img id="logo" src="logo.jpg" alt="logo" />
+
+      <div id="items">
+        <a href="#home">Home</a>
+        <a href="#bmicalc">BMI Calculator</a>
+        <a href="#feedback">Customer Feedbacks</a>
+        <a href="#contact">Contact Us</a>
+      </div>
+    </nav>
+    <div id="healthsummary">
+      <h1 id="infoheading" class="centerText">
+        &#9776;&#9776;&#9776; Your Health Information &#9776;&#9776;&#9776;
+      </h1>
+      <h3 id="mc" class="infos">&#x27AB; Your Maintenance Calories :</h3>
+      <h3 id="bmi" class="infos">&#x27AB; Your BMI :</h3>
+      <h3 id="bmr" class="infos">&#x27AB; Your BMR :</h3>
+      <h3 id="bs" class="infos">&#x27AB; Your Body Status :</h3>
+      <h3 id="goal" class="infos">&#x27AB; Your Goal :</h3>
+    </div>
+    <section id="home">
+      <div id="div1">
+        <h2>
+          &#9776;Diet <br />&nbsp;&nbsp;&nbsp;and <br />
+          &nbsp;&nbsp;&nbsp;weight <br />
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;management&#9776;
+        </h2>
+        <br />
+        <h4>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#9657;Calories
+          matter <br />
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#9657;Serving
+          size matters <br />
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#9657;Fats
+          & cholesterol matter <br />
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#9657;Fruits,
+          vegetables & whole grains matter <br />
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#9657;Exercise
+          matters <br />
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#9657;Sticking
+          to it matters <br />
+        </h4>
+      </div>
+      <div id="formdiv" class="centerText">
+        <h1>SIGN UP</h1>
+        <p style="font-family: 'Cormorant Unicase', serif">
+          New user? Sign up to get a diet plan
+        </p>
+        <form id="form">
+          <input
+            type="text"
+            id="fname"
+            class="input"
+            name="fname"
+            placeholder="First name..."
+            required
+          />
+          <input
+            type="text"
+            id="lname"
+            class="input"
+            name="lname"
+            placeholder="Last name..."
+            required
+          />
+          <input
+            type="email"
+            id="email"
+            class="input"
+            name="email"
+            placeholder="Email address..."
+            required
+          />
+          <input
+            type="password"
+            id="pass"
+            class="input"
+            name="pass"
+            placeholder="New password..."
+            required
+          />
+          <input
+            type="password"
+            id="confirmpass"
+            class="input"
+            name="confirmpass"
+            placeholder="Confirm new password..."
+            required
+          />
+          <input
+            type="tel"
+            id="phonenum"
+            class="input"
+            name="phonenum"
+            placeholder="Phone number..."
+            required
+          />
+          <input
+            type="button"
+            id="submitform"
+            class="centerText"
+            value="Sign Up"
+            onclick="register()"
+          />
+          <h5 style="color: whitesmoke; padding: 10px 0px">OR</h5>
+          <input
+            type="button"
+            id="signin"
+            class="centerText"
+            onclick="openSignInPage()"
+            value="Log In"
+          />
+        </form>
+      </div>
+    </section>
+    <section id="bmicalc">
+      <h2 class="centerText">
+        &#9776;&#9776;&#9776; Calculate your BMI below &#9776;&#9776;&#9776;
+      </h2>
+      <label for="weight"><h3>Enter Your Weight(kg)</h3></label>
+      <input
+        type="number"
+        min="0"
+        id="weight"
+        class="BMIinput"
+        name="weight"
+        value="0"
+        step="1"
+      />
+
+      <label for="height"><h3>Enter Your Height(m)</h3></label>
+      <input
+        type="number"
+        min="0"
+        id="height"
+        class="BMIinput"
+        name="height"
+        value="0"
+        step="0.01"
+      />
+
+      <input id="btn" type="button" onclick="calcBMI()" value="Calculate" />
+
+      <h3 id="result">Your BMI is :</h3>
+      <h3 id="resultString">You are</h3>
+    </section>
+    <section id="feedback" style="border: 0.1px solid black">
+      <h2 id="feedbackHeading">
+        &#9776;&#9776;&#9776; Customer feedbacks &#9776;&#9776;&#9776;
+      </h2>
+    </section>
+
+    <section id="contact">
+      <h2 class="centerText">
+        &#9776;&#9776;&#9776; Contact US &#9776;&#9776;&#9776;
+      </h2>
+      <fieldset>
+        <legend>Send us a message</legend>
+        <textarea id="w3review" name="w3review" rows="20" cols="80"> </textarea>
+        <input id="msgsubmitbtn" type="button" onclick="msgSubmit()" value="Send&#x27A4;" />
+      </fieldset>
+      
+      <h3 class="contacting" id="c1">&#x0260E; Call us : 0124 4628747, 0124 5045105, 0124 2898000</h3>
+      <h3 class="contacting">&#x2709; Email us : eatsmart@tk.com</h3>
+    </section>
+    <script type="text/javascript">
+      (function (d, m) {
+        var kommunicateSettings = {
+          appId: "ad9866a28eef8aba34b7d16afb6d7b6d",
+          popupWidget: true,
+          automaticChatOpenOnNavigation: true,
+          onInit: function () {
+            var css = `*{font-family: 'Sofadi One', cursive!important;} .mck-msg-right .mck-msg-box,.mck-msg-left .mck-msg-box{border-radius: 20px!important;} .mck-box-body .mck-message-inner{background: url(back2.jpg) no-repeat center center/cover;}`;
+            Kommunicate.customizeWidgetCss(css);
+          },
+        };
+        var s = document.createElement("script");
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = "https://widget.kommunicate.io/v2/kommunicate.app";
+        var h = document.getElementsByTagName("head")[0];
+        h.appendChild(s);
+        window.kommunicate = m;
+        m._globals = kommunicateSettings;
+      })(document, window.kommunicate || {});
+      /* NOTE : Use web server to view HTML files as real-time update will not work if you directly open the HTML file in the browser. */
+    </script>
+    <script>
+      if (localStorage.getItem("currUserName") != null) {
+        document.getElementById("formdiv").style.visibility = "hidden";
+        var name = localStorage.getItem("currUserName");
+        const xhr = new XMLHttpRequest();
+        xhr.open(
+          "GET",
+          "https://ufzvgo3pig.execute-api.ap-south-1.amazonaws.com/testing?username=" +
+            name,
+          false
+        );
+        xhr.onload = function () {
+          var userinfo = JSON.parse(xhr.responseText);
+          document.getElementById("mc").innerText =
+            "Your current maintenance calories : " + userinfo.mc + "Cal/day";
+          document.getElementById("bmi").innerText =
+            "Your current BMI : " + userinfo.bmi;
+          document.getElementById("bmr").innerText =
+            "Your current BMR : " + userinfo.bmr;
+          document.getElementById("bs").innerText =
+            "Your current body status : " + userinfo.bs;
+          document.getElementById("goal").innerText =
+            "Your current goal : " + userinfo.goal;
+        };
+        xhr.send();
+      } else {
+        document.getElementById("logout").style.visibility = "hidden";
+        document.getElementById("healthsummary").style.visibility = "hidden";
+      }
+      const xhr3 = new XMLHttpRequest();
+      xhr3.open(
+        "GET",
+        "https://1oactjiooh.execute-api.ap-south-1.amazonaws.com/funcTest",
+        false
+      );
+      xhr3.onload = function () {
+        var arr = JSON.parse(xhr3.responseText).message;
+        for (let index = 0; index < arr.length; index++) {
+          msgBy = arr[index].FirstName;
+          message = arr[index].Feedback;
+          if (message == undefined) {
+            continue;
+          }
+          var ele1 = document.createElement("h2");
+          var ele2 = document.createElement("h3");
+          ele1.innerText = message;
+          ele2.innerText = "~" + msgBy;
+          ele1.style.textAlign = "center";
+          ele1.style.paddingRight = "25px";
+          ele1.style.letterSpacing = "2px";
+          ele1.style.marginTop = "10px";
+          ele1.style.marginBottom = "3px";
+          ele2.style.width = "fit-content";
+          ele2.style.margin = "auto";
+          ele2.style.textAlign = "center";
+          ele2.style.letterSpacing = "2px";
+          ele2.style.marginBottom = "30px";
+          ele2.style.color = "white";
+          ele2.style.background = "black";
+          ele2.style.padding = "3px";
+          ele2.style.borderRadius = "10px";
+
+          document.getElementById("feedback").appendChild(ele1);
+          document.getElementById("feedback").appendChild(ele2);
+        }
+      };
+      xhr3.send();
+      function logout() {
+        localStorage.removeItem("currUserName");
+        location.reload();
+      }
+      function register() {
+        if (
+          document.getElementById("fname").value == "" ||
+          document.getElementById("lname").value == "" ||
+          document.getElementById("email").value == "" ||
+          document.getElementById("pass").value == "" ||
+          document.getElementById("confirmpass").value == "" ||
+          document.getElementById("phonenum").value == ""
+        ) {
+          alert("Fill all the details to sign up!");
+          return;
+        }
+
+        if (
+          document.getElementById("pass").value !=
+          document.getElementById("confirmpass").value
+        ) {
+          alert("Input password and confirm password must be same!");
+          return;
+        }
+
+        var api =
+          "https://imskt3fvzb.execute-api.ap-south-1.amazonaws.com/test";
+        api += "?username=" + document.getElementById("fname").value;
+        api += "&lastname=" + document.getElementById("lname").value;
+        api += "&email=" + document.getElementById("email").value;
+        api += "&password=" + document.getElementById("pass").value;
+        api += "&phonenumber=" + document.getElementById("phonenum").value;
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", api, false);
+        xhr.onload = function () {
+          result = xhr.responseText;
+          response = JSON.parse(result);
+          if (response.message == "Sign up successful!") {
+            document.getElementById("fname").value = "";
+            document.getElementById("lname").value = "";
+            document.getElementById("email").value = "";
+            document.getElementById("pass").value = "";
+            document.getElementById("confirmpass").value = "";
+            document.getElementById("phonenum").value = "";
+            alert(response.message);
+            window.open("signin.html");
+          } else {
+            alert(response.message);
+          }
+        };
+        xhr.send();
+      }
+
+      function calcBMI() {
+        var weight = document.getElementById("weight").value;
+        var height = document.getElementById("height").value;
+        var BMI = weight / Math.pow(height, 2);
+        BMI = BMI.toFixed(2);
+        var string;
+        document.getElementById("result").innerText = "Your BMI is" + " " + BMI;
+        if (BMI < 18.5) string = "Underweight";
+        else if (BMI >= 18.5 && BMI <= 24.99) string = "Normal";
+        else if (BMI >= 25.0 && BMI <= 29.99) string = "Overweight";
+        else string = "Obese";
+        document.getElementById("resultString").innerText =
+          "You are" + " " + string;
+      }
+
+      function openSignInPage() {
+        window.location.href = "signin.html";
+      }
+    </script>
+  </body>
+</html>

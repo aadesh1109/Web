@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MyHealthcare:Diet Plan</title>
+    <link rel="stylesheet" href="dietPlan.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+  </head>
+  <body>
+    <section id="diet">
+      <h1 id="h1summary">
+        &#9776;&#9776;&#9776; Health summary &#9776;&#9776;&#9776;
+      </h1>
+      <h3 id="maintenanceCalorie">&#x27AB; Your Maintenance Calories :</h3>
+      <h3 id="result">&#x27AB; Your BMI :</h3>
+      <h3 id="bmrSt">&#x27AB; Your BMR :</h3>
+      <h3 id="resultString">&#x27AB; Your Body Status :</h3>
+      <h3 id="goal">&#x27AB; Your Goal :</h3>
+
+      <h1 id="h1diet" style="margin-top: 100px">
+        &#9776;&#9776;&#9776; Diet plan &#9776;&#9776;&#9776;
+      </h1>
+      <table
+        id="example"
+        style="width: 100%; min-height: 750px;"
+      >
+        <tbody>
+          <tr class="sub-head">
+            <th class="Day">&#x2611;</th>
+            <th class="early">Monday</th>
+            <th class="breakfast">Tuesday</th>
+            <th class="Mid-Morning">Wednesday</th>
+            <th class="Lunch">Thursday</th>
+            <th class="Evening">Friday</th>
+            <th class="Mid-evening">Saturday</th>
+            <th class="Dinner">Sunday</th>
+          </tr>
+          <tr class="bottom_line">
+            <td class="sub-name">Breakfast</td>
+            <td id="breakmon"></td>
+            <td id="breaktue"></td>
+            <td id="breakwed"></td>
+            <td id="breakthurs"></td>
+            <td id="breakfri"></td>
+            <td id="breaksat"></td>
+            <td id="breaksun"></td>
+          </tr>
+          <tr>
+            <td class="sub-name">Lunch</td>
+            <td id="lunmon"></td>
+            <td id="luntue"></td>
+            <td id="lunwed"></td>
+            <td id="lunthurs"></td>
+            <td id="lunfri"></td>
+            <td id="lunsat"></td>
+            <td id="lunsun"></td>
+          </tr>
+          <tr>
+            <td class="sub-name">Snacks</td>
+            <td id="snackmon"></td>
+            <td id="snacktue"></td>
+            <td id="snackwed"></td>
+            <td id="snackthurs"></td>
+            <td id="snackfri"></td>
+            <td id="snacksat"></td>
+            <td id="snacksun"></td>
+          </tr>
+          <tr>
+            <td class="sub-name">Dinner</td>
+            <td id="dinmon"></td>
+            <td id="dintue"></td>
+            <td id="dinwed"></td>
+            <td id="dinthurs"></td>
+            <td id="dinfri"></td>
+            <td id="dinsat"></td>
+            <td id="dinsun"></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section id="feedback">
+      <h2>
+        &#9776;&#9776;&#9776;Give us your valuable
+        feedback!&#9776;&#9776;&#9776;
+      </h2>
+      <textarea
+        id="feedbackText"
+        name="myTextArea"
+        cols="80"
+        rows="20"
+      ></textarea>
+      <button id="btn" onclick="submitFeedback()">&#8811;&#8811;</button>
+    </section>
+  </body>
+  <script>
+    var bmi;
+    var fitnessStatus;
+    var actLev;
+    var maleOrFemale;
+    var w;
+    var h;
+    var a;
+    var api = "https://s0abducw8b.execute-api.ap-south-1.amazonaws.com/test3";
+    api += "?username=" + localStorage.getItem("currUserName");
+
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", api, false);
+    xhr.onload = function () {
+      var file = JSON.parse(xhr.responseText);
+      bmi = file.BMIValue;
+      fitnessStatus = file.Fitnesslevel;
+      actLev = file.Activitylevel;
+      maleOrFemale - file.Gender;
+      w = file.Weight;
+      h = file.Height; 
+      a = file.Age;
+    };
+    xhr.send();
+
+    var goal;
+    var activityFactor;
+    var bmr;
+    var calorieRequired;
+
+    if (fitnessStatus == "Underweight") {
+      goal = "Gain muscle mass";
+    } else if (fitnessStatus == "Fit") {
+      goal = "Maintain weight";
+    } else if (fitnessStatus == "Overweight") {
+      goal = "Lose Body Fat";
+    } else {
+      goal = "Extremely Lose Body Fat";
+    }
+
+    if (actLev == "light") {
+      activityFactor = 1.2;
+    } else if (actLev == "moderate") {
+      activityFactor = 1.55;
+    } else {
+      activityFactor = 1.72;
+    }
+    if (maleOrFemale == "male") {
+      bmr = 10 * w + 6.25 * (h * 100) - (5 * a + 5);
+      calorieRequired = bmr * activityFactor;
+    } else {
+      bmr = 10 * w + 6.25 * (h * 100) - (5 * a - 161);
+      calorieRequired = bmr * activityFactor;
+    }
+    calorieRequired=Math.round(calorieRequired)+"";
+    bmr = bmr+"";
+    document.getElementById("result").innerText = "➫ Your current BMI : " + bmi;
+    document.getElementById("bmrSt").innerText = "➫ Your current BMR : " + bmr;
+    document.getElementById("resultString").innerText =
+      "➫ Your current body status : " + fitnessStatus;
+    document.getElementById("maintenanceCalorie").innerText =
+      "➫ Your current Maintenance Calories : " +
+      Math.round(calorieRequired) +
+      "Cal/day";
+    document.getElementById("goal").innerText = "➫ Your current goal : " + goal;
+
+    if (bmi < 16.5) {
+      document.getElementById(
+        "breakmon"
+      ).innerText = `Cucumber Detox Water(1 glass), Oats Porridge in Skimmed Milk(1 bowl), Mixed Nuts`;
+      document.getElementById(
+        "breaktue"
+      ).innerText = `Curd(1.5 katori)Mixed Vegetable Stuffed Roti(2 piece), Skimmed Milk Paneer(100 grams)`;
+      document.getElementById(
+        "breakwed"
+      ).innerText = `Skim Milk Yoghurt(1 cup (8 fl oz))Multigrain Toast(2 toast), Skimmed Milk Paneer(100 grams)`;
+      document.getElementById(
+        "breakthurs"
+      ).innerText = `Fruit and Nuts Yogurt Smoothie(0.75 glass), Egg Omelette(1 serve(one egg))`;
+      document.getElementById(
+        "breakfri"
+      ).innerText = `Cucumber Detox Water(1 glass),	Skimmed Milk(1 glass)Peas Poha(1.5 katori)`;
+      document.getElementById(
+        "breaksat"
+      ).innerText = `Mixed Sambar(1 bowl)Idli(2 idli), Skimmed Milk Paneer(100 grams)`;
+      document.getElementById(
+        "breaksun"
+      ).innerText = `Cucumber Detox Water(1 glass),	Besan Chilla(2 cheela)Green Garlic Chutney(3 tablespoon)`;
+      document.getElementById(
+        "lunmon"
+      ).innerText = `Mixed Vegetable Salad(1 katori), Dal(1 katori)Gajar Matar Sabzi(1 katori), Roti (1 roti/chapati)`;
+      document.getElementById(
+        "luntue"
+      ).innerText = `Mixed Vegetable Salad(1 katori),	Lentil Curry(0.75 bowl)Methi Rice(0.5 katori)`;
+      document.getElementById(
+        "lunwed"
+      ).innerText = `Mixed Vegetable Salad(1 katori),	Sauteed Vegetables with Paneer(1 katori)Roti (1 roti/chapati), Green Chutney(2 tablespoon)`;
+      document.getElementById(
+        "lunthurs"
+      ).innerText = `Mixed Vegetable Salad(1 katori),	Green Gram Whole Dal Cooked(1 katori)Bhindi sabzi(1 katori), Roti (1 roti/chapati)`;
+      document.getElementById(
+        "lunfri"
+      ).innerText = `Mixed Vegetable Salad(1 katori),	Low Fat Paneer Curry(1.5 katori)Missi Roti(1 roti)`;
+      document.getElementById(
+        "lunsat"
+      ).innerText = `Mixed Vegetable Salad(1 katori),	Curd(1.5 katori)Aloo Baingan Tamatar Ki Sabzi(1 katori), Roti (1 roti/chapati)`;
+      document.getElementById(
+        "lunsun"
+      ).innerText = `Mixed Vegetable Salad(1 katori),	Palak Chole(1 bowl)Steamed Rice(0.5 katori)`;
+      document.getElementById(
+        "snackmon"
+      ).innerText = `Cut Fruits(1 cup)Buttermilk(1 glass), Tea with Less Sugar and Milk(1 teacup)`;
+      document.getElementById(
+        "snacktue"
+      ).innerText = `Apple(0.5 small (2-3/4″ dia))Buttermilk(1 glass),	Coffee with Milk and Less Sugar(0.5 tea cup)`;
+      document.getElementById(
+        "snackwed"
+      ).innerText = `Banana(0.5 small (6″ to 6-7/8″ long))Buttermilk(1 glass), Tea with Less Sugar and Milk(1 teacup)`;
+      document.getElementById(
+        "snackthurs"
+      ).innerText = `Orange(1 fruit (2-5/8″ dia))Buttermilk(1 glass),	Coffee with Milk and Less Sugar(0.5 tea cup)`;
+      document.getElementById(
+        "snackfri"
+      ).innerText = `Papaya(1 cup 1″ pieces)Buttermilk(1 glass),	Tea with Less Sugar and Milk(1 teacup)`;
+      document.getElementById(
+        "snacksat"
+      ).innerText = `Cut Fruits(1 cup)Buttermilk(1 glass),	Coffee with Milk and Less Sugar(0.5 tea cup)`;
+      document.getElementById(
+        "snacksun"
+      ).innerText = `Apple(0.5 small (2-3/4″ dia))Buttermilk(1 glass),	Tea with Less Sugar and Milk(1 teacup)`;
+      document.getElementById(
+        "dinmon"
+      ).innerText = `Mixed Vegetable Salad(1 katori), Dal(1 katori)Lauki Sabzi(1 katori), Roti (1 roti/chapati)`;
+      document.getElementById(
+        "dintue"
+      ).innerText = `Mixed Vegetable Salad(1 katori),	Sauteed Vegetables with Paneer(1 katori)Roti (1 roti/chapati), Green Chutney(2 tablespoon)`;
+      document.getElementById(
+        "dinwed"
+      ).innerText = `Mixed Vegetable Salad(1 katori),	Lentil Curry(0.75 bowl)Methi Rice(0.5 katori)`;
+      document.getElementById(
+        "dinthurs"
+      ).innerText = `Mixed Vegetable Salad(1 katori),	Palak Chole(1 bowl)Steamed Rice(0.5 katori)`;
+      document.getElementById(
+        "dinfri"
+      ).innerText = `Mixed Vegetable Salad(1 katori),	Curd(1.5 katori)Aloo Baingan Tamatar Ki Sabzi(1 katori), Roti (1 roti/chapati)`;
+      document.getElementById(
+        "dinsat"
+      ).innerText = `Mixed Vegetable Salad(1 katori),	Green Gram Whole Dal Cooked(1 katori)Bhindi sabzi(1 katori), Roti (1 roti/chapati)`;
+      document.getElementById(
+        "dinsun"
+      ).innerText = `Mixed Vegetable Salad(1 katori),	Low Fat Paneer Curry(1 katori)Missi Roti(1 roti)`;
+    } else if (bmi >= 16.5 && bmi < 18.5) {
+      document.getElementById(
+        "breakmon"
+      ).innerText = `Brown rice idli, sambhar, a spoonful of coconut chutney/two whole
+              eggs, one toast with unsweetened tea/coffee`;
+      document.getElementById(
+        "breaktue"
+      ).innerText = `Chana/Moong dal pancakes with paneer stuffing/scrambled eggs with
+              toast and unsweetened tea/coffee`;
+      document.getElementById(
+        "breakwed"
+      ).innerText = `Porridge with fruits and milk/omelette with one plain roti and
+              unsweetened tea/coffee`;
+      document.getElementById(
+        "breakthurs"
+      ).innerText = `Oats with yoghurt and fruits/Spanish vegetable omelette with toast
+              and unsweetened tea/coffee`;
+      document.getElementById(
+        "breakfri"
+      ).innerText = `Vegetable daliya/French toast and unsweetened tea/coffee`;
+      document.getElementById(
+        "breaksat"
+      ).innerText = `Parathas using multigrain with fruits/egg multigrain paratha
+              unsweetened tea/coffee`;
+      document.getElementById(
+        "breaksun"
+      ).innerText = `Oats and milk with fruits and unsweetened tea/coffee`;
+      document.getElementById(
+        "lunmon"
+      ).innerText = `One whole-grain chapati, dal, mixed vegetable curry, a bowl of
+              salad/one whole-grain chapati turned into a tortilla with chicken
+              stuffing`;
+      document.getElementById(
+        "luntue"
+      ).innerText = `Brown rice with chickpea gravy/chicken gravy and a cup of sauteed
+              vegetables`;
+      document.getElementById(
+        "lunwed"
+      ).innerText = `Whole-grain chapati with paneer gravy/chicken gravy and vegetable
+              salad`;
+      document.getElementById(
+        "lunthurs"
+      ).innerText = `Whole-grain chapati with lentil gravy and veg sabzi/sautéed
+              chicken roti wrap with salad`;
+      document.getElementById(
+        "lunfri"
+      ).innerText = `Sambhar rice/chicken stew with appam and vegetable salad`;
+      document.getElementById(
+        "lunsat"
+      ).innerText = `Whole-grain chapati with rajma gravy/chicken curry with quinoa`;
+      document.getElementById(
+        "lunsun"
+      ).innerText = `Whole-grain chapati with vegetable soup/chicken soup with
+              vegetable salad`;
+      document.getElementById(
+        "snackmon"
+      ).innerText = `5 almonds and two dates, a glass of buttermilk`;
+      document.getElementById(
+        "snacktue"
+      ).innerText = `5 almonds and 2 dates, a glass of unsweetened milk`;
+      document.getElementById(
+        "snackwed"
+      ).innerText = `5 almonds and 2 dates, a glass of buttermilk`;
+      document.getElementById(
+        "snackthurs"
+      ).innerText = `5 almonds and 2 dates, a glass of milk (unsweetened)`;
+      document.getElementById(
+        "snackfri"
+      ).innerText = `5 almonds and 2 dates, a glass of milk`;
+      document.getElementById(
+        "snacksat"
+      ).innerText = `5 almonds and 2 dates, a glass of buttermilk`;
+      document.getElementById(
+        "snacksun"
+      ).innerText = `5 almonds and 2 dates, a glass of milk`;
+      document.getElementById(
+        "dinmon"
+      ).innerText = `One large bowl of soup with sautéed tofu/paneer/chicken`;
+      document.getElementById(
+        "dintue"
+      ).innerText = `One bowl of khichdi and spinach salad`;
+      document.getElementById(
+        "dinwed"
+      ).innerText = `One bowl of brown rice with palak-paneer/steamed fish`;
+      document.getElementById(
+        "dinthurs"
+      ).innerText = `One bowl of brown rice with channa masala/chicken masala and green
+              salad`;
+      document.getElementById(
+        "dinfri"
+      ).innerText = `One bowl of vegetable pulao/chicken pulao with curd`;
+      document.getElementById(
+        "dinsat"
+      ).innerText = `Two thin lentil pancakes with paneer tikka / grilled fish with
+              flavoured rice`;
+      document.getElementById(
+        "dinsun"
+      ).innerText = `Tandoori paneer with fresh veg salad / tandoori fish or chicken
+              with fresh veg salad`;
+    } else if (bmi >= 18.5 && bmi <= 21.99) {
+      document.getElementById(
+        "breakmon"
+      ).innerText = `Scrambled eggs with mushrooms and oatmeal`;
+      document.getElementById(
+        "breaktue"
+      ).innerText = `Protein pancakes with light-syrup, peanut butter and raspberries`;
+      document.getElementById(
+        "breakwed"
+      ).innerText = `Chicken sausage with egg and roasted potatoes`;
+      document.getElementById(
+        "breakthurs"
+      ).innerText = `Ground turkey, egg, cheese and salsa in a whole-grain tortilla`;
+      document.getElementById(
+        "breakfri"
+      ).innerText = `Blueberries, strawberries and vanilla Greek yogurt on overnight oats`;
+      document.getElementById(
+        "breaksat"
+      ).innerText = `Ground turkey and egg with corn, bell peppers, cheese and salsa`;
+      document.getElementById(
+        "breaksun"
+      ).innerText = `Eggs sunny-side up and avocado toast`;
+      document.getElementById(
+        "lunmon"
+      ).innerText = `Venison burger, white rice and broccoli`;
+      document.getElementById(
+        "luntue"
+      ).innerText = `Sirloin steak, sweet potato and spinach salad with vinaigrette`;
+      document.getElementById(
+        "lunwed"
+      ).innerText = `Turkey breast, basmati rice and mushrooms`;
+      document.getElementById(
+        "lunthurs"
+      ).innerText = `Chicken breast, baked potato, sour cream and broccoli`;
+      document.getElementById(
+        "lunfri"
+      ).innerText = `Tilapia fillets with lime juice, black and pinto beans and seasonal veggies`;
+      document.getElementById(
+        "lunsat"
+      ).innerText = `Tilapia fillet, potato wedges and bell peppers`;
+      document.getElementById(
+        "lunsun"
+      ).innerText = `Pork tenderloin slices with roasted garlic potatoes and green beans`;
+      document.getElementById(
+        "snackmon"
+      ).innerText = `Low-fat cottage cheese with blueberries, Protein shake and a banana`;
+      document.getElementById(
+        "snacktue"
+      ).innerText = `Hard-boiled eggs and an apple, Protein shake and walnuts`;
+      document.getElementById(
+        "snackwed"
+      ).innerText = `Greek yogurt and almonds, Protein shake and grapes`;
+      document.getElementById(
+        "snackthurs"
+      ).innerText = `Yogurt with granola, Protein shake and mixed berries`;
+      document.getElementById(
+        "snackfri"
+      ).innerText = `Jerky and mixed nuts, Protein shake and watermelon`;
+      document.getElementById(
+        "snacksat"
+      ).innerText = `Can of tuna with crackers, Protein shake and pear`;
+      document.getElementById(
+        "snacksun"
+      ).innerText = `Protein balls and almond butter, Protein shake and strawberries`;
+      document.getElementById(
+        "dinmon"
+      ).innerText = `Salmon, quinoa and asparagus`;
+      document.getElementById(
+        "dintue"
+      ).innerText = `Ground turkey and marinara sauce over pasta`;
+      document.getElementById(
+        "dinwed"
+      ).innerText = `Mackerel, brown rice and salad leaves with vinaigrette`;
+      document.getElementById(
+        "dinthurs"
+      ).innerText = `Stir-fry with chicken, egg, brown rice, broccoli, peas and carrots`;
+      document.getElementById(
+        "dinfri"
+      ).innerText = `Ground beef with corn, brown rice, green peas and green beans`;
+      document.getElementById(
+        "dinsat"
+      ).innerText = `Diced beef with rice, black beans, bell peppers, cheese and pico de gallo`;
+      document.getElementById(
+        "dinsun"
+      ).innerText = `Turkey meatballs, marinara sauce and parmesan cheese over pasta`;
+    } else if (bmi >= 22.0 && bmi <= 24.99) {
+      document.getElementById(
+        "breakmon"
+      ).innerText = `Sambar with 2 brown rice idlis/ Paneer sandwich with mint chutney`;
+      document.getElementById(
+        "breaktue"
+      ).innerText = `Chana dal pancakes with mixed vegetables and a glass of milk/ bread and egg with fruits`;
+      document.getElementById(
+        "breakwed"
+      ).innerText = `Apple cinnamon porridge/ Vegetable uttapam with sambhar`;
+      document.getElementById(
+        "breakthurs"
+      ).innerText = `Yogurt with sliced fruits and sunflower seeds/ vegetable poha`;
+      document.getElementById(
+        "breakfri"
+      ).innerText = `Vegetable dalia and a glass of milk/ 3-4 dal paddu with sambar`;
+      document.getElementById(
+        "breaksat"
+      ).innerText = `Multigrain parathas with avocado and sliced papaya/ dal paratha with mixed vegetables`;
+      document.getElementById(
+        "breaksun"
+      ).innerText = `Buckwheat porridge with sliced mango/ fruit salad with a glass of milk`;
+      document.getElementById(
+        "lunmon"
+      ).innerText = `Whole-grain roti with mixed-vegetable curry with one dal`;
+      document.getElementById(
+        "luntue"
+      ).innerText = `Chickpea curry with brown rice/ Brown rice with dal`;
+      document.getElementById(
+        "lunwed"
+      ).innerText = `Whole-grain roti with tofu/ non veg and mixed vegetables`;
+      document.getElementById(
+        "lunthurs"
+      ).innerText = `Whole-grain roti with vegetable sabzi/ Dal with veg or non veg sabzi and brown rice`;
+      document.getElementById(
+        "lunfri"
+      ).innerText = `Vegetable sambar with brown rice/ 2 multigrain roti with veg/non veg curry`;
+      document.getElementById(
+        "lunsat"
+      ).innerText = `Large salad with rajma curry and quinoa/ one bowl mixed vegetable kadai`;
+      document.getElementById(
+        "lunsun"
+      ).innerText = `Vegetable soup with whole-grain roti/ one bowl millet and dal khichdi with multigrain roti`;
+      document.getElementById(
+        "snackmon"
+      ).innerText = `Fruits with buttermilk or green tea, Protein shake with nuts and seeds`;
+      document.getElementById(
+        "snacktue"
+      ).innerText = `Veg sandwich or milk and apple., Walnuts and dates`;
+      document.getElementById(
+        "snackwed"
+      ).innerText = `Vegetable/ fruit salads, Fresh fruit smoothies or whey protein shakes`;
+      document.getElementById(
+        "snackthurs"
+      ).innerText = `Veg sandwich or milk and apple., Walnuts and dates`;
+      document.getElementById(
+        "snackfri"
+      ).innerText = `Protein shake with nuts and seeds, Veg sandwich or milk and apple.`;
+      document.getElementById(
+        "snacksat"
+      ).innerText = `Walnuts and dates, Vegetable/ fruit salads`;
+      document.getElementById(
+        "snacksun"
+      ).innerText = `Fresh fruit smoothies or whey protein shakes, Multigrain flour khakras`;
+      document.getElementById(
+        "dinmon"
+      ).innerText = `Tofu/chicken curry with mixed vegetables and a fresh spinach salad/chicken gravy with 2 multigrain rotis`;
+      document.getElementById(
+        "dintue"
+      ).innerText = `Khichdi with sprout salad/Veg paratha with raita`;
+      document.getElementById(
+        "dinwed"
+      ).innerText = `Palak paneer with brown rice and vegetables/ 2 Multigrain rotis with chicken and curd`;
+      document.getElementById(
+        "dinthurs"
+      ).innerText = `Chana masala with basmati rice and green salad/ One bowl of fruits and vegetables with multigrain rotis`;
+      document.getElementById(
+        "dinfri"
+      ).innerText = `Tofu curry with potatoes and mixed vegetables/ chicken curry with 2 multigrain rotis`;
+      document.getElementById(
+        "dinsat"
+      ).innerText = `Lentil pancakes with tofu tikka masala/ green salad with mixed vegetables and multigrain roti`;
+      document.getElementById(
+        "dinsun"
+      ).innerText = `Masala-baked tofu with vegetable curry/ non veg curry (chicken, seafood) with multigrain roti`;
+    } else if (bmi >= 25.0 && bmi <= 27.99) {
+      document.getElementById(
+        "breakmon"
+      ).innerText = `Sambar with 2 brown rice idlis/ Paneer sandwich with mint chutney`;
+      document.getElementById(
+        "breaktue"
+      ).innerText = `Chana dal pancakes with mixed vegetables and a glass of milk/ bread and egg with fruits`;
+      document.getElementById(
+        "breakwed"
+      ).innerText = `Apple cinnamon porridge/ Vegetable uttapam with sambhar`;
+      document.getElementById(
+        "breakthurs"
+      ).innerText = `Yogurt with sliced fruits and sunflower seeds/ vegetable poha`;
+      document.getElementById(
+        "breakfri"
+      ).innerText = `Vegetable dalia and a glass of milk/ 3-4 dal paddu with sambar`;
+      document.getElementById(
+        "breaksat"
+      ).innerText = `Multigrain parathas with avocado and sliced papaya/ dal paratha with mixed vegetables`;
+      document.getElementById(
+        "breaksun"
+      ).innerText = `Buckwheat porridge with sliced mango/ fruit salad with a glass of milk`;
+      document.getElementById(
+        "lunmon"
+      ).innerText = ` Whole-grain roti with mixed-vegetable curry with one dal`;
+      document.getElementById(
+        "luntue"
+      ).innerText = `Chickpea curry with brown rice/ Brown rice with dal`;
+      document.getElementById(
+        "lunwed"
+      ).innerText = `Whole-grain roti with tofu/ non veg and mixed vegetables`;
+      document.getElementById(
+        "lunthurs"
+      ).innerText = `Whole-grain roti with vegetable sabzi/ Dal with veg or non veg sabzi and brown rice`;
+      document.getElementById(
+        "lunfri"
+      ).innerText = `Vegetable sambar with brown rice/ 2 multigrain roti with veg/non veg curry`;
+      document.getElementById(
+        "lunsat"
+      ).innerText = `Large salad with rajma curry and quinoa/ one bowl mixed vegetable kadai`;
+      document.getElementById(
+        "lunsun"
+      ).innerText = `Vegetable soup with whole-grain roti/ one bowl millet and dal khichdi with multigrain roti`;
+      document.getElementById(
+        "snackmon"
+      ).innerText = `Fruits with buttermilk or green tea, Protein shake with nuts and seeds`;
+      document.getElementById(
+        "snacktue"
+      ).innerText = `Veg sandwich or milk and apple., Walnuts and dates`;
+      document.getElementById(
+        "snackwed"
+      ).innerText = `Vegetable/ fruit salads, Fresh fruit smoothies or whey protein shakes`;
+      document.getElementById(
+        "snackthurs"
+      ).innerText = `Protein shake with nuts and seeds, Vegetable/ fruit salads`;
+      document.getElementById(
+        "snackfri"
+      ).innerText = `Walnuts and dates, Fresh fruit smoothies or whey protein shakes`;
+      document.getElementById(
+        "snacksat"
+      ).innerText = `Walnuts and dates, Protein shake with nuts and seeds`;
+      document.getElementById(
+        "snacksun"
+      ).innerText = `Fresh fruit smoothies or whey protein shakes, Protein shake with nuts and seeds`;
+      document.getElementById(
+        "dinmon"
+      ).innerText = `Tofu/chicken curry with mixed vegetables and a fresh spinach salad/chicken gravy with 2 multigrain rotis`;
+      document.getElementById(
+        "dintue"
+      ).innerText = `Khichdi with sprout salad/Veg paratha with raita`;
+      document.getElementById(
+        "dinwed"
+      ).innerText = `Palak paneer with brown rice and vegetables/ 2 Multigrain rotis with chicken and curd`;
+      document.getElementById(
+        "dinthurs"
+      ).innerText = `Chana masala with basmati rice and green salad/ One bowl of fruits and vegetables with multigrain rotis`;
+      document.getElementById(
+        "dinfri"
+      ).innerText = `Tofu curry with potatoes and mixed vegetables/ chicken curry with 2 multigrain rotis`;
+      document.getElementById(
+        "dinsat"
+      ).innerText = `Lentil pancakes with tofu tikka masala/ green salad with mixed vegetables and multigrain roti`;
+      document.getElementById(
+        "dinsun"
+      ).innerText = `Masala-baked tofu with vegetable curry/ non veg curry (chicken, seafood) with multigrain roti`;
+    } else if (bmi >= 28.0 && bmi <= 29.99) {
+      document.getElementById(
+        "breakmon"
+      ).innerText = `6 egg omelette with spinach`;
+      document.getElementById(
+        "breaktue"
+      ).innerText = `Large portion of granola, whole milk and sliced banana`;
+      document.getElementById(
+        "breakwed"
+      ).innerText = `1 or 2 bagels with peanut butter`;
+      document.getElementById(
+        "breakthurs"
+      ).innerText = `2 Poached eggs, salmon and avocado`;
+      document.getElementById(
+        "breakfri"
+      ).innerText = `1 or 2 bagels with peanut butter`;
+      document.getElementById(
+        "breaksat"
+      ).innerText = `6 egg omelette with spinach`;
+      document.getElementById(
+        "breaksun"
+      ).innerText = `Large portion of granola, whole milk and sliced banana`;
+      document.getElementById(
+        "lunmon"
+      ).innerText = `Chicken breast, salsa, brown rice and peppers`;
+      document.getElementById(
+        "luntue"
+      ).innerText = `Tinned tuna, quinoa, avocado and broccoli`;
+      document.getElementById(
+        "lunwed"
+      ).innerText = `Salmon, sweet potatoes and sesame seeds`;
+      document.getElementById(
+        "lunthurs"
+      ).innerText = `Double chicken breast, broccoli and rice`;
+      document.getElementById(
+        "lunfri"
+      ).innerText = `Chicken breast, salsa, brown rice and peppers`;
+      document.getElementById(
+        "lunsat"
+      ).innerText = `Tinned tuna, quinoa, avocado and broccoli`;
+      document.getElementById(
+        "lunsun"
+      ).innerText = `Chicken breast, salsa, brown rice and peppers`;
+      document.getElementById(
+        "snackmon"
+      ).innerText = `Small portion of chicken breast, tomatoes, celery and brown rice`;
+      document.getElementById(
+        "snacktue"
+      ).innerText = `Handful of almonds, Apple with peanut butter`;
+      document.getElementById(
+        "snackwed"
+      ).innerText = `Dark chocolate , Mass gainer shake`;
+      document.getElementById(
+        "snackthurs"
+      ).innerText = `Small portion of chicken breast, tomatoes, celery and brown rice`;
+      document.getElementById(
+        "snackfri"
+      ).innerText = `Handful of almonds, Apple with peanut butter`;
+      document.getElementById(
+        "snacksat"
+      ).innerText = `Handful of almonds, Apple with peanut butter`;
+      document.getElementById(
+        "snacksun"
+      ).innerText = `Small portion of chicken breast, tomatoes, celery and brown rice`;
+      document.getElementById(
+        "dinmon"
+      ).innerText = `Tuna steak with olive oil, two sweet potatoes and quinoa`;
+      document.getElementById(
+        "dintue"
+      ).innerText = `Sirloin steak, white rice and fried egg`;
+      document.getElementById(
+        "dinwed"
+      ).innerText = `Burger with lean beef, fries, white bread roll, cup of green beans`;
+      document.getElementById(
+        "dinthurs"
+      ).innerText = `Tuna, pasta and Bolognese sauce`;
+      document.getElementById(
+        "dinfri"
+      ).innerText = `Chili con carne with rolls of bread`;
+      document.getElementById(
+        "dinsat"
+      ).innerText = `Burger with lean beef, fries, white bread roll, cup of green beans`;
+      document.getElementById(
+        "dinsun"
+      ).innerText = `Tuna steak with olive oil, two sweet potatoes and quinoa`;
+    } else if (bmi >= 30.0 && bmi <= 33.0) {
+      document.getElementById(
+        "breakmon"
+      ).innerText = `Sambar with brown rice idli`;
+      document.getElementById(
+        "breaktue"
+      ).innerText = `Chana dal pancakes with mixed vegetables and a glass of milk`;
+      document.getElementById(
+        "breakwed"
+      ).innerText = `Apple cinnamon porridge made with milk and topped with sliced almonds`;
+      document.getElementById(
+        "breakthurs"
+      ).innerText = `Yogurt with sliced fruits and sunflower seeds`;
+      document.getElementById(
+        "breakfri"
+      ).innerText = `Vegetable dalia and a glass of milk`;
+      document.getElementById(
+        "breaksat"
+      ).innerText = `Multigrain parathas with avocado and sliced papaya`;
+      document.getElementById(
+        "breaksun"
+      ).innerText = `Buckwheat porridge with sliced mango`;
+      document.getElementById(
+        "lunmon"
+      ).innerText = `Whole-grain roti with mixed-vegetable curry`;
+      document.getElementById(
+        "luntue"
+      ).innerText = `Chickpea curry with brown rice`;
+      document.getElementById(
+        "lunwed"
+      ).innerText = `Whole-grain roti with tofu and mixed vegetables`;
+      document.getElementById(
+        "lunthurs"
+      ).innerText = `Whole-grain roti with vegetable subji`;
+      document.getElementById(
+        "lunfri"
+      ).innerText = `Vegetable sambar with brown rice`;
+      document.getElementById(
+        "lunsat"
+      ).innerText = `Large salad with rajma curry and quinoa`;
+      document.getElementById(
+        "lunsun"
+      ).innerText = `Vegetable soup with whole-grain roti`;
+      document.getElementById(
+        "snackmon"
+      ).innerText = `Small handful of nuts, Sliced fruit with unsweetened yogurt`;
+      document.getElementById(
+        "snacktue"
+      ).innerText = `Vegetable chaat, Sprout salad`;
+      document.getElementById(
+        "snackwed"
+      ).innerText = `Roasted pumpkin seeds, Sliced fruit with nuts or nut butter`;
+      document.getElementById(
+        "snackthurs"
+      ).innerText = `Roasted chickpeas (channa), Hummus with vegetables`;
+      document.getElementById(
+        "snackfri"
+      ).innerText = `Bean salad, Salted popcorn`;
+      document.getElementById(
+        "snacksat"
+      ).innerText = `Unsweetened kefir, Homemade trail mix`;
+      document.getElementById(
+        "snacksun"
+      ).innerText = `Fennel seeds, Fresh fruit with cheese, Broth-based vegetable soup`;
+      document.getElementById(
+        "dinmon"
+      ).innerText = `Tofu curry with mixed vegetables and a fresh spinach salad`;
+      document.getElementById("dintue").innerText = `Khichdi with sprout salad`;
+      document.getElementById(
+        "dinwed"
+      ).innerText = `Palak paneer with brown rice and vegetables`;
+      document.getElementById(
+        "dinthurs"
+      ).innerText = `Chana masala with basmati rice and green salad`;
+      document.getElementById(
+        "dinfri"
+      ).innerText = `Tofu curry with potato and mixed vegetables`;
+      document.getElementById(
+        "dinsat"
+      ).innerText = `Lentil pancakes with tofu tikka masala`;
+      document.getElementById(
+        "dinsun"
+      ).innerText = `Masala-baked tofu with vegetable curry`;
+    } else {
+      document.getElementById(
+        "breakmon"
+      ).innerText = `Oats with milk (no sugar or jaggery)	1 cup, Green tea	1 cup`;
+      document.getElementById(
+        "breaktue"
+      ).innerText = `Daliya Upma	1 cup, Curd	1 cup`;
+      document.getElementById(
+        "breakwed"
+      ).innerText = `Tea/coffee (no sugar)	1 cup, Idli	2 no., Sambar	1 cup`;
+      document.getElementById(
+        "breakthurs"
+      ).innerText = `Oats chilla	2 medium size, Milk/tea/coffee (no sugar)	1 cup`;
+      document.getElementById(
+        "breakfri"
+      ).innerText = `Daliya with milk (no sugar or jaggery)	1 cup`;
+      document.getElementById(
+        "breaksat"
+      ).innerText = `Boiled Chana	1 cup, Milk/ tea/coffee(no sugar)	1 cup`;
+      document.getElementById(
+        "breaksun"
+      ).innerText = `Sugarfree Muesli with milk	1 cup`;
+      document.getElementById(
+        "lunmon"
+      ).innerText = `Salad	1 cup, Chapatti	2 no., Vegetable	1 cup, Dal	1 cup`;
+      document.getElementById(
+        "luntue"
+      ).innerText = `Salad	1 cup, Jowar Roti	1 no., Vegetable	1 cup, Dal	1 cup`;
+      document.getElementById(
+        "lunwed"
+      ).innerText = `Salad	1 cup, Sprouts	1 cup, Stuffed vegetable Paratha	1 no., Curd	1 cup`;
+      document.getElementById(
+        "lunthurs"
+      ).innerText = `Vegetable Soup	1 cup, Bajra Roti	1 no., Vegetable	1 cup, Dal	1 cup`;
+      document.getElementById(
+        "lunfri"
+      ).innerText = `Salad	1 cup, Chapatti	2 no., Vegetable	1 cup, Dal	1 cup`;
+      document.getElementById(
+        "lunsat"
+      ).innerText = `Salad	1 cup, Jowar Roti	1 no., Vegetable	1 cup, Dal	1 cup`;
+      document.getElementById(
+        "lunsun"
+      ).innerText = `Vegetable Soup	1 cup, Dal Khichdi	1 cup, Vegetable	1 cup., Curd	1 cup`;
+      document.getElementById(
+        "snackmon"
+      ).innerText = `Khakra	1 no, Tea/Coffee (no sugar)	1 cup`;
+      document.getElementById(
+        "snacktue"
+      ).innerText = `Moong Dal Chilla	3 small (3-inch diameter), Tea/Coffee (No sugar)	1 cup`;
+      document.getElementById(
+        "snackwed"
+      ).innerText = `Green tea	1 cup, Puffed Rice with vegetables	1 cup`;
+      document.getElementById(
+        "snackthurs"
+      ).innerText = `Wheat flakes with milk (no sugar)	3 tbsp flakes in 1 ½ cup milk`;
+      document.getElementById(
+        "snackfri"
+      ).innerText = `Khakra	1 no, Tea/Coffee (no sugar)	1 cup`;
+      document.getElementById(
+        "snacksat"
+      ).innerText = `Poha	¾ cup, Tea/Coffee (No sugar)	1 cup`;
+      document.getElementById(
+        "snacksun"
+      ).innerText = `Green tea	1 cup, Roasted Mixed Cereal Puffs	1 cup`;
+      document.getElementById(
+        "dinmon"
+      ).innerText = `Vegetable Soup	1 cup, Rice	¾ cup, Dal	1 cup, Curd	1 cup`;
+      document.getElementById(
+        "dintue"
+      ).innerText = `Salad	1 cup, Chapatti	2 no., Vegetable	1 cup, Sprouts	1 cup`;
+      document.getElementById(
+        "dinwed"
+      ).innerText = `Palak tomato soup	1 cup, Vegetable Khichdi	1 cup, Buttermilk	1 glass`;
+      document.getElementById(
+        "dinthurs"
+      ).innerText = `Sprout Paneer Salad with vegetables	1 ½ cup, Chapatti	2 no., Green Vegetable	1 cup`;
+      document.getElementById(
+        "dinfri"
+      ).innerText = `Vegetable Soup	1 cup, Brown Rice	¾ cup, Sambar	1 cup, Curd	1 cup`;
+      document.getElementById(
+        "dinsat"
+      ).innerText = `Salad	1 cup, Chapatti	2 no., Vegetable	1 cup, Kadhi	1 cup`;
+      document.getElementById(
+        "dinsun"
+      ).innerText = `Green Salad	1 cup, Jowar Roti	1 no., Vegetable	1 cup, Sprouts	1 cup`;
+    }
+
+    function submitFeedback() {
+      var feedbackString =
+        "“" + document.getElementById("feedbackText").value + "”";
+        alert("submitted successfully!");
+      var api = "https://mh0znjdv33.execute-api.ap-south-1.amazonaws.com/test4";
+      api += "?username=" + localStorage.getItem("currUserName");
+      api += "&feedback=" + feedbackString;
+      api += "&bmr=" + bmr;
+      api += "&maintenancecalories=" + calorieRequired;
+      api += "&goal=" + goal;
+     
+
+      const xhr = new XMLHttpRequest();
+      xhr.open("GET", api, false);
+      xhr.onload = function () {
+        console.log(xhr.responseText);
+      };
+      xhr.send();
+      window.location.href = "thankyou.html";
+    }
+  </script>
+</html>
